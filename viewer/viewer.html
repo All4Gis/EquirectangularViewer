@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>@-ms-viewport { width: device-width; }</style>
+<link rel="stylesheet" href="./css/reset.css">
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<div id="loading"></div>
+<div id="pano"></div>
+
+<script src="./js/es5-shim.js"></script>
+<script src="./js/eventShim.js"></script>
+<script src="./js/requestAnimationFrame.js" ></script>
+<script src="./js/marzipano.js" ></script>
+<script src="index.js"></script>
+
+<script>
+
+function InitialYaw(yaw) {
+	scene = viewer.scene(); // get the current scene
+	var view = scene.view();    // get the scene's view
+	view.setYaw(yaw * Math.PI/180);     
+}
+
+</script>
+
+</body>
+</html>
