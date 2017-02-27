@@ -1,6 +1,4 @@
 # Equirectangular local images viewer for in Qgis
- ----------
-
 
 This plugin allows the visualization of equirectangular local images, although modifying the code, it can be used for any 360 image, given that the library [Marzipano](https://github.com/google/marzipano) is used.
  
