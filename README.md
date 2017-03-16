@@ -26,10 +26,9 @@ It’s simple:
  
  
 ## Donations
-Want to buy me a beer (or gadget)? Please use Paypal button on the project page, [Paypal.me](https://www.paypal.me/all4gis), or contact me directly.
- 
-[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)]
-(https://www.paypal.com/cgi-bin/webscr?button=donate&business=5329N9XX4WQHY&item_name=EquirectangularViewer+Plugin&quantity=&amount=&currency_code=EUR&shipping=&tax=&notify_url=&cmd=_donations&bn=JavaScriptButton_donate&env=www)
+Want to buy me a beer (or gadget)? Please use Paypal button on the project page,[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/all4gis), or contact me directly.
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?button=donate&business=5329N9XX4WQHY&item_name=EquirectangularViewer+Plugin&quantity=&amount=&currency_code=EUR&shipping=&tax=&notify_url=&cmd=_donations&bn=JavaScriptButton_donate&env=www)
  
 If this plugin is useful for you, consider to donate to the author.
 
