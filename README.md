@@ -15,7 +15,7 @@ These libraries must be placed in `D:\OSGeo4W64\apps\Python27\Lib\site-packages 
 On the other hand, the plugin must be placed in the `.qgis` path, it should be something like   `C:\Users\<username>\.qgis2\python\plugins `
  
 Once installed, you can test the correct functioning of the plugin with the example that is provided,a shapefile with some images.
- [.shp] (https://github.com/All4Gis/EquirectangularViewer/tree/master/Shapefile)
+ [.shp](https://github.com/All4Gis/EquirectangularViewer/tree/master/Shapefile)
  
 ## How it works?
  
