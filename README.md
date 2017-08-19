@@ -37,9 +37,10 @@ If you don't find this path ,are wrong or you are using other platform, open the
 and search the `python/plugins` folder in this path.
  
 Once installed, you can test the correct functioning of the plugin with the example that is provided,a shapefile with some images.
- [.shp](https://github.com/All4Gis/EquirectangularViewer/tree/master/Project_example)
+ [Test Project](https://github.com/All4Gis/EquirectangularViewer/tree/master/Project_example)
  
- Note: For show the images you need put the absolute path in the shapefile or modify the code ,method GetImage() in Geo360Dialog.py
+ ### Note : 
+ For show the images you need put the absolute path in the shapefile or modify the code ,method GetImage() in Geo360Dialog.py
  
 ## How it works?
  
@@ -56,4 +57,4 @@ Want to buy me a beer (or gadget)? Please use Paypal button on the project page,
  
 If this plugin is useful for you, consider to donate to the author.
 
-[© All4gis 2017]
+[Â© All4gis 2017]
