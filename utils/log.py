@@ -1,9 +1,9 @@
-import os
-
-import logging, logging.handlers
 import inspect
+import logging, logging.handlers
+import os
 import sys
 import traceback
+
 
 try:
     d = os.path.dirname(os.path.expanduser("~/.qgis2/log/"))
@@ -11,7 +11,7 @@ try:
         os.mkdir(d)    
 finally:
     pluginName = "Equirectangular Viewer"
-    logFilePath=os.path.expanduser("~/.qgis2/log/%s.log" % pluginName)
+    logFilePath = os.path.expanduser("~/.qgis2/log/%s.log" % pluginName)
 
 class log(object):
     
@@ -47,10 +47,10 @@ class log(object):
     def initLogging():
         try:
             """ set up rotating log file handler with custom formatting """
-            log.handler = logging.handlers.RotatingFileHandler(logFilePath, maxBytes=1024*1024*10, backupCount=5)
+            log.handler = logging.handlers.RotatingFileHandler(logFilePath, maxBytes=1024 * 1024 * 10, backupCount=5)
             formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(message)s")
             log.handler.setFormatter(formatter)
-            logger = logging.getLogger(log.pluginId) # root logger
+            logger = logging.getLogger(log.pluginId)  # root logger
             logger.setLevel(logging.DEBUG)
             logger.addHandler(log.handler)         
         except Exception as e:

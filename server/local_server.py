@@ -1,11 +1,14 @@
 import SimpleHTTPServer
 import SocketServer
 import os
+from qgis.core import *
 import threading
 import time
-import config
+
 from PyQt4.QtCore import *
-from qgis.core import *
+
+from EquirectangularViewer import config
+
 
 try:
     import sys
@@ -21,7 +24,7 @@ def openWebApp(folder):
     if server is None:
         os.chdir(folder) 
         server = SocketServer.TCPServer(("", config.PORT), SimpleHTTPServer.SimpleHTTPRequestHandler)
-        thread = threading.Thread(target = server.serve_forever)
+        thread = threading.Thread(target=server.serve_forever)
         thread.daemon = True
         thread.start()
 

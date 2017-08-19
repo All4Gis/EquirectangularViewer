@@ -9,6 +9,9 @@
 
 from PyQt4 import QtCore, QtGui
 
+import resources_rc
+
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -104,4 +107,3 @@ class Ui_orbitalDialog(object):
     def retranslateUi(self, orbitalDialog):
         orbitalDialog.setWindowTitle(_translate("orbitalDialog", "Equirectangular Viewer", None))
 
-import resources_rc

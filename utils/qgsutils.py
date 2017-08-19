@@ -4,13 +4,13 @@
  ***************************************************************************/
 """
 import os
+from qgis.gui import QgsRubberBand, QgsMessageBar
 
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt, QCoreApplication
 
-from qgis.gui import QgsRubberBand, QgsMessageBar
-
 from EquirectangularViewer.utils.log import log
+
 
 try:
 	_fromUtf8 = QtCore.QString.fromUtf8
@@ -34,7 +34,7 @@ class qgsutils(object):
 	def zoomToFeature(canvas, layer, id):
 		if layer:
 			for feature in layer.getFeatures():
-				if feature.id()== id:
+				if feature.id() == id:
 					canvas.setExtent(feature.geometry().boundingBox())
 					canvas.refresh()
 					return True
@@ -47,12 +47,12 @@ class qgsutils(object):
 			if ver in canvas.scene().items():
 				canvas.scene().removeItem(ver)
 
-	#Show user & log info/warning/error messages
+	# Show user & log info/warning/error messages
 	@staticmethod
-	def showUserAndLogMessage(parent, before, text, level, duration = 3, onlyLog = False):
+	def showUserAndLogMessage(parent, before, text, level, duration=3, onlyLog=False):
 		if not onlyLog:	 
 			parent.iface.messageBar().popWidget()
-			parent.iface.messageBar().pushMessage(_fromUtf8(before), _fromUtf8(text), level = level, duration = duration) 
+			parent.iface.messageBar().pushMessage(_fromUtf8(before), _fromUtf8(text), level=level, duration=duration) 
 			QtGui.qApp.processEvents()
 		if level == QgsMessageBar.INFO:
 			log.info(text)
@@ -60,14 +60,14 @@ class qgsutils(object):
 			log.warning(text)
 		elif level == QgsMessageBar.CRITICAL:
 			log.error(text)
-		#QgsMessageLog.logMessage(text, level = level)
+		# QgsMessageLog.logMessage(text, level = level)
 		return
 
 	@staticmethod	
 	def getToFeature(canvas, layer, id):
 		if layer:
 			for feature in layer.getFeatures():
-				if feature.id()== id:
+				if feature.id() == id:
 					return feature
 		return False
  

@@ -4,6 +4,7 @@ __author__ = "The CEF Python authors"
 
 import sys
 
+
 if 0x02070000 <= sys.hexversion < 0x03000000:
     from . import cefpython_py27 as cefpython
 elif 0x03000000 <= sys.hexversion < 0x04000000:

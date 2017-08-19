@@ -18,24 +18,23 @@
  *                                                                         *
  ***************************************************************************/
 """
+import os.path
+from qgis.core import *
+from qgis.gui import QgsMapToolIdentify, QgsMessageBar
+import qgis.utils
+
+from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from PyQt4 import QtCore, QtGui
- 
-import os.path
-import config
-from qgis.core import *
-from qgis.gui import *
-import qgis.utils
-from qgis.gui import QgsMapToolIdentify, QgsMessageBar
- 
-from qgis.utils import isPluginLoaded
-from utils.log import log
 
 from Geo360Dialog import Geo360Dialog 
-from utils.qgsutils import qgsutils
+import config
 import gui.generated.resources_rc
- 
+from server.local_server import *
+from utils.log import log
+from utils.qgsutils import qgsutils
+
+
 try:
     import sys
     from pydevd import *
@@ -54,18 +53,14 @@ try:
 except:
     None
        
-import local_server
-
- 
     
 class Geo360:
     timer = None
+    
     """QGIS Plugin Implementation."""
      
     def __init__(self, iface):
         
-        """Constructor."""
- 
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
         
@@ -88,10 +83,11 @@ class Geo360:
   
   
     def StartCefPython(self):
-        qgsutils.showUserAndLogMessage(self, u"Information: ",u"Create Viewer.",QgsMessageBar.INFO,onlyLog = True)   
+        qgsutils.showUserAndLogMessage(self, u"Information: ", u"Create Viewer.", QgsMessageBar.INFO, onlyLog=True)   
         settings = {}
         settings["browser_subprocess_path"] = "%s/%s" % (
             cefpython.GetModuleDirectory(), "subprocess")
+        settings["log_severity"] = cefpython.LOGSEVERITY_DISABLE  # LOGSEVERITY_DISABLE - will not create "debug.log" file.
         settings["context_menu"] = {
             "enabled": False,
             "navigation": False,  # Back, Forward, Reload
@@ -103,7 +99,7 @@ class Geo360:
     
         cefpython.Initialize(settings)
         
-    #Add GeoPesquisar tool
+    # Add Geo360 tool
     def initGui(self):
         log.initLogging()
         self.action = QAction(QIcon(":/EquirectangularViewer/images/icon.png"), u"Equirectangular Viewer", self.iface.mainWindow())
@@ -112,51 +108,51 @@ class Geo360:
         self.iface.addPluginToMenu(u"&Equirectangular Viewer", self.action)
  
 
-    #Unload GeoPesquisar tool
+    # Unload Geo360 tool
     def unload(self):
         self.iface.removePluginMenu(u"&Equirectangular Viewer", self.action)
         self.iface.removeToolBarIcon(self.action)
  
-    #Rum click feature
+    # Run click feature
     def run(self):
-        self.encontrado=False       
+        self.encontrado = False       
         
-        #Check if mapa foto is loaded
-        lys=self.canvas.layers()
-        if len(lys)==0:
-            qgsutils.showUserAndLogMessage(self, u"Information: ", u"You need to upload the photo layer.", level = QgsMessageBar.INFO)
+        # Check if mapa foto is loaded
+        lys = self.canvas.layers()
+        if len(lys) == 0:
+            qgsutils.showUserAndLogMessage(self, u"Information: ", u"You need to upload the photo layer.", level=QgsMessageBar.INFO)
             return
         
-        #Folder viewer for local server
-        folder = self.plugin_path+"\\viewer"        
+        # Folder viewer for local server
+        folder = self.plugin_path + "\\viewer"        
        
-        #Start local server in plugin folder
-        local_server.openWebApp(folder)
+        # Start local server in plugin folder
+        openWebApp(folder)
         QtGui.qApp.processEvents()  
         
         self.StartCefPython()  
         QtGui.qApp.processEvents()    
  
-        #Create Timer is necessary for cefpython
+        # Create Timer is necessary for cefpython
         self.createTimer()
         QtGui.qApp.processEvents() 
         
         for layer in lys:
-            if layer.name()==config.layer_name:
-                self.encontrado=True
-                self.mapTool = SelectTool(self.iface,parent=self,layer=layer)
+            if layer.name() == config.layer_name:
+                self.encontrado = True
+                self.mapTool = SelectTool(self.iface, parent=self, layer=layer)
                 self.iface.mapCanvas().setMapTool(self.mapTool)
                 
-        if self.encontrado==False:
-            qgsutils.showUserAndLogMessage(self, u"Information: ", u"You need to upload the photo layer.", level = QgsMessageBar.INFO)   
+        if self.encontrado == False:
+            qgsutils.showUserAndLogMessage(self, u"Information: ", u"You need to upload the photo layer.", level=QgsMessageBar.INFO)   
     
         return
  
-    #Run dialog GeoPesquisar
-    def ShowDialog(self,featuresId=None,layer=None): 
+    # Run dialog Geo360
+    def ShowDialog(self, featuresId=None, layer=None): 
         
-        self.featuresId=featuresId
-        self.layer=layer
+        self.featuresId = featuresId
+        self.layer = layer
  
         Geo360 = qgis.utils.plugins["EquirectangularViewer"] 
         try:
@@ -164,23 +160,23 @@ class Geo360:
                 qgsutils.removeAllHighlightFeaturesFromCanvasScene(self.canvas)
                 self.dlg.ReloadView(self.featuresId) 
                 
-                if(Geo360.dlg.isVisible()==False):
+                if(Geo360.dlg.isVisible() == False):
                     self.dlg.show()                     
                 return
         except: 
-            self.dlg  = Geo360Dialog(self.iface,parent=self.iface.mainWindow(),featuresId=featuresId,layer=self.layer)
-            self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint )
+            self.dlg = Geo360Dialog(self.iface, parent=self.iface.mainWindow(), featuresId=featuresId, layer=self.layer)
+            self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
             self.dlg.show()        
             None          
                           
-#Select Photo on map
+# Select Photo on map
 class SelectTool(QgsMapToolIdentify):
-    def __init__(self, iface,parent=None, layer=None):
+    def __init__(self, iface, parent=None, layer=None):
         QgsMapToolIdentify.__init__(self, iface.mapCanvas())   
         self.canvas = iface.mapCanvas()
         self.iface = iface
-        self.layer=layer
-        self.parent=parent
+        self.layer = layer
+        self.parent = parent
 
         self.cursor = QCursor(QPixmap(["16 16 3 1",
                     "      c None",
@@ -207,12 +203,12 @@ class SelectTool(QgsMapToolIdentify):
         self.canvas.setCursor(self.cursor)
     
     def canvasReleaseEvent(self, event):
-        found_features = self.identify(event.x(), event.y(),[self.layer], self.TopDownAll)
+        found_features = self.identify(event.x(), event.y(), [self.layer], self.TopDownAll)
         
         if len(found_features) > 0:
 
             layer = found_features[0].mLayer
             feature = found_features[0].mFeature
 
-            qgsutils.zoomToFeature(self.canvas,layer,feature.id())         
-            self.parent.ShowDialog(featuresId=feature.id(),layer=layer)
+            qgsutils.zoomToFeature(self.canvas, layer, feature.id())         
+            self.parent.ShowDialog(featuresId=feature.id(), layer=layer)
