@@ -41,6 +41,13 @@ Once installed, you can test the correct functioning of the plugin with the exam
  
  ### Note : 
  For show the images you need put the absolute path in the shapefile or modify the code ,method GetImage() in Geo360Dialog.py
+
+ ### common mistakes: 
+ 
+ If not work or show this log:
+ `NameError: global name 'cefpython' is not defined`
+ Please,install cefpython using pip.
+ `pip install cefpython3`
  
 ## How it works?
  
