@@ -107,4 +107,10 @@ Want to buy me a beer (or gadget)? Please use Paypal button on the project page,
  
 If this plugin is useful for you, consider to donate to the author.
 
+## Thank you
+Thank you to the individual contributors for this project:
+
+ - Valerio De Luca : http://www.mainjoin.eu/
+ - Others
+
 [© All4gis 2017]
