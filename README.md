@@ -44,6 +44,7 @@ Once installed, you can test the correct functioning of the plugin with the exam
 ***As for python in the environment variables:***
 
 Don't add anything in user environment variables,In system environment variables create a new variable:
+
 Name: `PYTHONHOME`
 Folder: `C:\Program Files\QGIS 2.18\apps\Python27`
 

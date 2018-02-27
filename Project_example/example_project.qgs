@@ -1,11 +1,11 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis projectname="" version="2.18.12">
+<qgis projectname="" version="2.18.17">
   <title></title>
   <autotransaction active="0"/>
   <evaluateDefaultValues active="0"/>
   <layer-tree-group expanded="1" checked="Qt::Checked" name="">
     <customproperties/>
-    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="photos_map_432620170222200049935" source="D:/GitHub/EquirectangularViewer/Project_example/shp/photos_map_4326.shp" name="photos_map_4326">
+    <layer-tree-layer expanded="1" providerKey="ogr" checked="Qt::Checked" id="photos_map_432620170222200049935" source="F:/EquirectangularViewer/Project_example/shp/photos_map_4326.shp" name="photos_map_4326">
       <customproperties/>
     </layer-tree-layer>
   </layer-tree-group>
@@ -13,10 +13,10 @@
   <mapcanvas>
     <units>degrees</units>
     <extent>
-      <xmin>-3.68614237947918211</xmin>
-      <ymin>40.40041078374159866</ymin>
-      <xmax>-3.68575102464918869</xmax>
-      <ymax>40.40076810771680726</ymax>
+      <xmin>-3.68616992826638645</xmin>
+      <ymin>40.40043671201190989</ymin>
+      <xmax>-3.68577857343639304</xmax>
+      <ymax>40.40079403598711849</ymax>
     </extent>
     <rotation>0</rotation>
     <projections>1</projections>
