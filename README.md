@@ -39,8 +39,51 @@ and search the `python/plugins` folder in this path.
 Once installed, you can test the correct functioning of the plugin with the example that is provided,a shapefile with some images.
  [Test Project](https://github.com/All4Gis/EquirectangularViewer/tree/master/Project_example)
  
+ ## Install Note for Windows 10
+
+***As for python in the environment variables:***
+
+Don't add anything in user environment variables,In system environment variables create a new variable:
+Name: `PYTHONHOME`
+Folder: `C:\Program Files\QGIS 2.18\apps\Python27`
+
+Instead, in the already existing `Path` variable add:
+
+    C:\OSGeo4W64\bin
+
+If there is not the folder `C:\OSGeo4W64\bin` add alternatively in `Path` variable:
+
+    C:\Program Files\QGIS 2.18\bin
+
+***Open the command prompt as an administrator:***
+
+Right click on the windows button at the bottom left,
+Search for **CMD**,
+Key combination **CTRL + SHIFT + ENTER** (*administrator mode*).
+
+Type python, returns the python version.Type: `import pip`
+If not errors it means that pip is present. **CTRL + Z** to exit the python console.
+
+Install the **cefpython3** python package.
+Always from command prompt:
+
+    python -m pip install cefpython3
+
+***Copy the plugin folder:***
+
+Copy EquirectangularViewer in the QGIS plugins folder.
+Type in the python console of QGIS:
+
+    print QgsApplication.qgisSettingsDirPath ()
+
+to find the QGIS plugins folder:
+
+    C:\Users\user\.qgis2\python\plugins
+ 
+ 
  ### Note : 
  For show the images you need put the absolute path in the shapefile or modify the code ,method GetImage() in Geo360Dialog.py
+
 
  ### common mistakes: 
  
