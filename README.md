@@ -111,7 +111,7 @@ If this plugin is useful for you, consider to donate to the author.
 ## Thank you
 Thank you to the individual contributors for this project:
 
- - Valerio De Luca : http://www.mainjoin.eu/
+ - <a href="http://www.mainjoin.eu/" target="_blank">Valerio De Luca</a>
  - Others
 
 [© All4gis 2017]
