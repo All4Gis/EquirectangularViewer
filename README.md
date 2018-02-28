@@ -116,6 +116,7 @@ If this plugin is useful for you, consider to donate to the author.
 Thank you to the individual contributors for this project:
 
  - <a href="http://www.mainjoin.eu/" target="_blank">Valerio De Luca</a>
+ - <a href="http://www.unaquantum.com/" target="_blank">Una Quantum</a>
  - Others
 
 [© All4gis 2017]
