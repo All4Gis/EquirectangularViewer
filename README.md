@@ -56,6 +56,10 @@ If there is not the folder `C:\OSGeo4W64\bin` add alternatively in `Path` variab
 
     C:\Program Files\QGIS 2.18\bin
 
+**Test** working python in command windows opening it as administrator ad typing `python`and If says python version all works.
+
+If says `python` is not recognized as an internal or external command remove `C:\OSGeo4W64\bin` from `Path` variable (even if it exists) and use `C:\Program Files\QGIS 2.18\bin`.
+
 ***Open the command prompt as an administrator:***
 
 Right click on the windows button at the bottom left,
