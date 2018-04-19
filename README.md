@@ -117,6 +117,7 @@ Thank you to the individual contributors for this project:
 
  - <a href="http://www.mainjoin.eu/" target="_blank">Valerio De Luca</a>
  - <a href="http://www.unaquantum.com/" target="_blank">Una Quantum</a>
+ - <a href="https://www.linkedin.com/in/adrian-diaconu" target="_blank">Adrian Diaconu</a> 
  - Others
 
 [© All4gis 2017]
