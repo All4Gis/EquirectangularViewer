@@ -2,7 +2,7 @@
 name= Equirectangular Viewer
 qgisMinimumVersion= 2.16
 description= Plugin for viewer local equirectangular images.
-version= 1.0
+version= 1.1
 author= Francisco Raga	
 email= franka1986@gmail.com
 icon=images/icon.png

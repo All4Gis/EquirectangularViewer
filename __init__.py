@@ -4,7 +4,7 @@ import sys
 
 try:
     sys.path.append(
-        "D:\eclipse\plugins\org.python.pydev_5.7.0.201704111357\pysrc")
+        "D:\eclipse\plugins\org.python.pydev_5.9.2.201708151115\pysrc")
 except ImportError:
     None
 

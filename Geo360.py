@@ -21,17 +21,17 @@
 import os.path
 
 from Geo360Dialog import Geo360Dialog
-from PyQt4 import QtCore, QtGui
 from PyQt4.QtCore import QTimer, Qt
 from PyQt4.QtGui import QAction, QIcon, QCursor, QPixmap
-import config
-import gui.generated.resources_rc
 from qgis.core import *
 from qgis.gui import QgsMapToolIdentify, QgsMessageBar
 import qgis.utils
 from server.local_server import *
 from utils.log import log
 from utils.qgsutils import qgsutils
+
+
+from PyQt4 import QtGui
 
 
 try:

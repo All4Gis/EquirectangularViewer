@@ -20,13 +20,11 @@
 """
 # Import the PyQt and QGIS libraries
 import math
-import os
 import re
 import shutil
 
-from PyQt4.QtCore import Qt, QTextCodec, QSettings, QPropertyAnimation, QSize, QObject
+from PyQt4.QtCore import Qt, QSettings, QPropertyAnimation, QSize, QObject
 from PyQt4.QtGui import QWidget, QDialog, QVBoxLayout, qApp
-import config
 from geom.transformgeom import transformGeometry
 from gui.generated.ui_orbitalDialog import Ui_orbitalDialog
 from qgis.core import QgsProject, QGis, QgsFeatureRequest, QgsPoint, QgsVectorLayer
@@ -45,6 +43,12 @@ try:
     from cefpython3 import cefpython
 except ImportError:
     None
+
+try:
+    from PIL import Image
+except ImportError:
+    None
+       
 
 
 class CefWidget(QWidget):
@@ -180,8 +184,22 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
                 os.remove(os.path.join(root, file))
 
         # Copy image in local folder
+        # Uncomment for large images if viewer is blank screen
+        img = Image.open(src_dir)
+        newwidth = 8000
         dst_dir = dst_dir + "\\image.jpg"
-        shutil.copy(src_dir, dst_dir)
+        width, height = img.size
+
+        if width > newwidth:
+            wpercent = (newwidth / float(img.size[0]))
+            hsize = int((float(img.size[1]) * float(wpercent)))
+            img = img.resize((newwidth, hsize), Image.ANTIALIAS)
+            img.save(dst_dir, optimize=True, quality=95)
+
+        # Comment for large images if viewer is blank screen
+        else:
+            shutil.copy(src_dir, dst_dir)
+
         qApp.processEvents()
         return
 
@@ -322,8 +340,8 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
 
                 # Filter mapa foto layer
                 ids = [feat.id() for feat in layer.getFeatures(
-                    QgsFeatureRequest().setFilterExpression("order ='" +
-                                                            str(new_lordem) +
+                    QgsFeatureRequest().setFilterExpression(config.column_order + " ='" + 
+                                                            str(new_lordem) + 
                                                             "'"))]
 
                 if len(ids) == 0:
@@ -332,8 +350,8 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
                         QgsMessageBar.INFO)
                     # Filter mapa foto layer
                     ids = [feat.id() for feat in layer.getFeatures(
-                        QgsFeatureRequest().setFilterExpression("order ='" +
-                                                                str(ac_lordem) +
+                        QgsFeatureRequest().setFilterExpression(config.column_order + " ='" + 
+                                                                str(ac_lordem) + 
                                                                 "'"))]
                     # Update selected feature
                     self.ReloadView(ids[0])
@@ -439,8 +457,9 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         tmpGeom = self.actualPointOrientation.asGeometry()
 
         self.rotateTool = transformGeometry()
+        epsg = self.canvas.mapRenderer().destinationCrs().authid()
         self.dumLayer = QgsVectorLayer(
-            "Point?crs=EPSG:4326", "temporary_points", "memory")
+            "Point?crs=" + epsg, "temporary_points", "memory")
         self.actualPointOrientation.setToGeometry(self.rotateTool.rotate(
             tmpGeom, self.actualPointDx, angle), self.dumLayer)
         qApp.processEvents()
