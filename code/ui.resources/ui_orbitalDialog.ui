@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>orbitalDialog</class>
+ <widget class="QDialog" name="orbitalDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>567</width>
+    <height>260</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Equirectangular Viewer</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/EquirectangularViewer/images/icon.png</normaloff>:/EquirectangularViewer/images/icon.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QVBoxLayout" name="ViewerLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btn_ZoomIn">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/EquirectangularViewer/images/Zoom_in.png</normaloff>:/EquirectangularViewer/images/Zoom_in.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_ZoomOut">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/EquirectangularViewer/images/Zoom_out.png</normaloff>:/EquirectangularViewer/images/Zoom_out.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>5</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_back">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/EquirectangularViewer/images/Previous_Arrow.png</normaloff>:/EquirectangularViewer/images/Previous_Arrow.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_next">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/EquirectangularViewer/images/Next_Arrow.png</normaloff>:/EquirectangularViewer/images/Next_Arrow.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>5</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_fullscreen">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="resources.qrc">
+         <normaloff>:/EquirectangularViewer/images/full_screen.png</normaloff>:/EquirectangularViewer/images/full_screen.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>btn_fullscreen</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>orbitalDialog</receiver>
+   <slot>FullScreen(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>421</x>
+     <y>305</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>350</x>
+     <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_ZoomOut</sender>
+   <signal>clicked()</signal>
+   <receiver>orbitalDialog</receiver>
+   <slot>ResizeDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>58</x>
+     <y>310</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>301</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_ZoomIn</sender>
+   <signal>clicked()</signal>
+   <receiver>orbitalDialog</receiver>
+   <slot>ResizeDialog()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>21</x>
+     <y>311</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_back</sender>
+   <signal>clicked()</signal>
+   <receiver>orbitalDialog</receiver>
+   <slot>GetBackNextImage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>219</x>
+     <y>308</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>173</x>
+     <y>311</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_next</sender>
+   <signal>clicked()</signal>
+   <receiver>orbitalDialog</receiver>
+   <slot>GetBackNextImage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>259</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>332</x>
+     <y>303</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>FullScreen(bool)</slot>
+  <slot>ResizeDialog()</slot>
+  <slot>GetBackNextImage()</slot>
+ </slots>
+</ui>
