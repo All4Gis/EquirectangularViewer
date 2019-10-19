@@ -2,7 +2,7 @@
 
 This plugin allows the visualization of equirectangular local images, it can be used for any 360 image, given that the library [Marzipano](https://github.com/google/marzipano) is used.
  
-[![Watch the video (Spanish)](https://i.imgur.com/Lf8TOSP.png)](https://youtu.be/iJhh0IWijL0 "EquirectangularViewer")
+[![Watch the video (Spanish)](https://i.imgur.com/BXJJ1cU.png)](https://youtu.be/iJhh0IWijL0 "EquirectangularViewer")
  
 ## Prerequisites
  
