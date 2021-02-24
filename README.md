@@ -20,7 +20,7 @@ Or using:
 
 
 Once installed, you can test the correct functioning of the plugin with the example that is provided,a shapefile with some images.
- [Test Project](https://github.com/All4Gis/EquirectangularViewer/tree/master/Project_example)
+ [Test Project](https://github.com/All4Gis/EquirectangularViewer/tree/master/code/Project_example)
  
  
 ## How it works?
