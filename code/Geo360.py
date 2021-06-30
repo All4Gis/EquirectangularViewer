@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  Equirectangular Viewer
@@ -18,37 +17,48 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.gui import QgsMapToolIdentify
 
+import sys
+import os
+from qgis.gui import QgsMapToolIdentify
 from PyQt5.QtCore import QTimer, Qt, QSettings, QThread
 from PyQt5.QtGui import QIcon, QCursor, QPixmap
 from PyQt5.QtWidgets import QAction
 
 from EquirectangularViewer.Geo360Dialog import Geo360Dialog
 import EquirectangularViewer.config as config
-from EquirectangularViewer.server.local_server import openWebApp
+from EquirectangularViewer.server.local_server import serverInFolder, serverShutdown
 from EquirectangularViewer.utils.log import log
 from EquirectangularViewer.utils.qgsutils import qgsutils
 from qgis.core import QgsApplication
+import platform
 
 try:
     from pydevd import *
 except ImportError:
     None
 
+# libs_path = os.path.join(os.path.dirname(__file__), "libs")
+# sys.path.append(libs_path)
+
 try:
-    from cefpython3 import cefpython
+    from cefpython3 import cefpython as cef
+    import ctypes
 except ImportError:
     None
 
+WINDOWS = (platform.system() == "Windows")
+LINUX = (platform.system() == "Linux")
+MAC = (platform.system() == "Darwin")
 
 class Geo360:
-    timer = None
 
     """QGIS Plugin Implementation."""
 
     def __init__(self, iface):
 
+        if not cef.GetAppSetting("external_message_pump"):
+            self.timer = self.createTimer()
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
         threadcount = QThread.idealThreadCount()
@@ -60,13 +70,14 @@ class Geo360:
         self.dlg = None
 
     def createTimer(self):
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.onTimer)
-        self.timer.start(10)
+        timer = QTimer()
+        timer.timeout.connect(self.onTimer)
+        timer.start(10)
+        return timer
 
     def onTimer(self):
         try:
-            cefpython.MessageLoopWork()
+            cef.MessageLoopWork()
         except Exception:
             None
 
@@ -77,18 +88,24 @@ class Geo360:
         ''' Start CefPython '''
         settings = {}
         settings["browser_subprocess_path"] = "%s/%s" % (
-            cefpython.GetModuleDirectory(), "subprocess")
-        settings["log_severity"] = cefpython.LOGSEVERITY_DISABLE
+            cef.GetModuleDirectory(), "subprocess")
+        settings["log_severity"] = cef.LOGSEVERITY_DISABLE
         settings["context_menu"] = {
-            "enabled": False,
+            "enabled": True,
             "navigation": False,  # Back, Forward, Reload
-            "print": False,
-            "view_source": False,
+            "print": True,
+            "view_source": True,
             "external_browser": False,  # Open in external browser
-            "devtools": False,  # Developer Tools
+            "devtools": True,  # Developer Tools
         }
+        
+        if MAC:
+        # requires enabling message pump on Mac
+        # in Qt example. Calling cef.DoMessageLoopWork in a timer
+        # doesn't work anymore.
+            settings["external_message_pump"] = True
 
-        cefpython.Initialize(settings)
+        cef.Initialize(settings)
 
     def initGui(self):
         ''' Add Geo360 tool '''
@@ -104,14 +121,28 @@ class Geo360:
         ''' Unload Geo360 tool '''
         self.iface.removePluginMenu(u"&Equirectangular Viewer", self.action)
         self.iface.removeToolBarIcon(self.action)
+        #ShutDown server
+        serverShutdown()
+        #ShutDown Cef
+        cef.Shutdown()
 
     def run(self):
         ''' Run click feature '''
-        self.encontrado = False
+        #Trick fix AttributeError: module 'sys' has no attribute 'argv'
+        # We need fedback about this
+        sys.argv = []
+
+        self.found = False
 
         # Check if mapa foto is loaded
         lys = self.canvas.layers()
-        if len(lys) == 0:
+        for layer in lys:
+            if layer.name() == config.layer_name:
+                self.found = True
+                self.mapTool = SelectTool(self.iface, parent=self, layer=layer)
+                self.iface.mapCanvas().setMapTool(self.mapTool)
+
+        if self.found is False:
             qgsutils.showUserAndLogMessage(
                 u"Information: ", u"You need to upload the photo layer.")
             return
@@ -119,23 +150,9 @@ class Geo360:
         # Folder viewer for local server
         folder = QgsApplication.qgisSettingsDirPath() + 'python/plugins/EquirectangularViewer/viewer'
         # Start local server in plugin folder
-        openWebApp(folder)
+        serverInFolder(folder)
         self.StartCefPython()
 
-        # Create Timer is necessary for cefpython
-        self.createTimer()
-
-        for layer in lys:
-            if layer.name() == config.layer_name:
-                self.encontrado = True
-                self.mapTool = SelectTool(self.iface, parent=self, layer=layer)
-                self.iface.mapCanvas().setMapTool(self.mapTool)
-
-        if self.encontrado is False:
-            qgsutils.showUserAndLogMessage(
-                u"Information: ", u"You need to upload the photo layer.")
-
-        return
 
     def ShowDialog(self, featuresId=None, layer=None):
         ''' Run dialog Geo360 '''

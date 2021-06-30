@@ -1,9 +1,30 @@
-# -*- coding: utf-8 -*-
+"""
+/***************************************************************************
+ Equirectangular Viewer
+                                 A QGIS plugin
+ Show local equirectangular images.
+                             -------------------
+        begin                : 2017-02-17
+        copyright            : (C) 2016 All4Gis.
+        email                : franka1986@gmail.com
+ ***************************************************************************/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ #   any later version.                                                    *
+ *                                                                         *
+ ***************************************************************************/
+"""
 import sys
 
 try:
     sys.path.append(
         "D:\eclipse\plugins\org.python.pydev.core_7.0.3.201811082356\pysrc")
+    sys.path.append(
+        "/home/fragalop/.eclipse/360744286_linux_gtk_x86_64/plugins/org.python.pydev.core_8.1.0.202012051215/pysrc"
+    )
     from pydevd import *
 except ImportError:
     None

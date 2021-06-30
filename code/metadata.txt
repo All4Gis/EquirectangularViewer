@@ -1,14 +1,15 @@
 [general]
 name= Equirectangular Viewer
+internal_name = EquirectangularViewer
 qgisMinimumVersion=3.4
 qgisMaximumVersion=3.99
 description= Plugin for viewer local equirectangular images.
 about= This plugin allows the visualization of equirectangular local images, although modifying the code, it can be used for any 360 image, given that the library Marzipano is used.
-version= 1.2
+version= 1.3
 author= Francisco Raga	
 email= franka1986@gmail.com
 icon=images/icon.png
-tags=images,local,cefpython, marzipano,equirectangular, equirectangular, Street View
+tags=images,local,cefpython, marzipano,equirectangular, equirectangular, Street View, 360
 homepage=https://github.com/All4Gis/EquirectangularViewer
 tracker=https://github.com/All4Gis/EquirectangularViewer/issues
 repository=https://github.com/All4Gis/EquirectangularViewer

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui.resources\ui_orbitalDialog.ui'
+# Form implementation generated from reading ui file 'ui/ui_orbitalDialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_orbitalDialog(object):
     def setupUi(self, orbitalDialog):
         orbitalDialog.setObjectName("orbitalDialog")
-        orbitalDialog.resize(567, 260)
+        orbitalDialog.resize(1298, 813)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -22,8 +22,7 @@ class Ui_orbitalDialog(object):
         orbitalDialog.setWindowIcon(icon)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(orbitalDialog)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.ViewerLayout = QtWidgets.QVBoxLayout()
-        self.ViewerLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.ViewerLayout = QtWidgets.QGridLayout()
         self.ViewerLayout.setObjectName("ViewerLayout")
         self.verticalLayout_3.addLayout(self.ViewerLayout)
         self.horizontalLayout = QtWidgets.QHBoxLayout()

@@ -19,7 +19,7 @@ LINUX = (platform.system() == "Linux")
 MAC = (platform.system() == "Darwin")
 
 
-def openWebApp(root_folder):
+def serverInFolder(root_folder):
     p = QProcess()
     p.setWorkingDirectory(root_folder)
     args = ('-m', 'http.server', str(config.PORT))
@@ -34,7 +34,7 @@ def openWebApp(root_folder):
         s.setValue("EquirectangularViewer/server_pid", pid)
 
 
-def shutdown():
+def serverShutdown():
     server_pid = s.value("EquirectangularViewer/server_pid")
     if server_pid is not None:
         pid = int(server_pid)

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  Equirectangular Viewer
@@ -18,8 +17,10 @@
  *                                                                         *
  ***************************************************************************/
 """
+
 import math
 import os
+import sys
 from qgis.core import (QgsPointXY,
                        QgsProject,
                        QgsFeatureRequest,
@@ -27,7 +28,6 @@ from qgis.core import (QgsPointXY,
                        QgsWkbTypes)
 from qgis.gui import QgsRubberBand
 import qgis.utils
-import re
 import shutil
 import platform
 import time
@@ -46,8 +46,11 @@ try:
 except ImportError:
     None
 
+# libs_path = os.path.join(os.path.dirname(__file__), "libs")
+# sys.path.append(libs_path)
+
 try:
-    from cefpython3 import cefpython
+    from cefpython3 import cefpython as cef
     import ctypes
 except ImportError:
     None
@@ -57,7 +60,9 @@ try:
 except ImportError:
     None
 
-WindowUtils = cefpython .WindowUtils()
+# Fix for PyCharm hints warnings when using static methods
+WindowUtils = cef.WindowUtils()
+
 # Platforms
 WINDOWS = (platform.system() == "Windows")
 LINUX = (platform.system() == "Linux")
@@ -75,50 +80,64 @@ class CefWidget(QWidget):
         self.hidden_window = None  # Required for PyQt5 on Linux
         self.show()
 
-    def focusInEvent(self, _):
+    def focusInEvent(self, event):
+        # This event seems to never get called on Linux, as CEF is
+        # stealing all focus.
+        if cef.GetAppSetting("debug"):
+            print("[qt.py] CefWidget.focusInEvent")
         if self.browser:
             if WINDOWS:
                 WindowUtils.OnSetFocus(self.getHandle(), 0, 0, 0)
             self.browser.SetFocus(True)
 
-    def focusOutEvent(self, _):
+    def focusOutEvent(self, event):
+        # This event seems to never get called on Linux, as CEF is
+        # stealing all focus.
+        if cef.GetAppSetting("debug"):
+            print("[qt.py] CefWidget.focusOutEvent")
         if self.browser:
             self.browser.SetFocus(False)
 
     def embedBrowser(self):
         if LINUX:
             self.hidden_window = QWindow()
-        windowInfo = cefpython.WindowInfo()
+        windowInfo = cef.WindowInfo()
         rect = [0, 0, self.width(), self.height()]
         windowInfo.SetAsChild(self.getHandle(), rect)
 
-        self.browser = cefpython.CreateBrowserSync(windowInfo,
-                                                   browserSettings={},
-                                                   navigateUrl=config.DEFAULT_URL)
+        self.browser = cef.CreateBrowserSync(windowInfo,
+                                                   browserSettings={'web_security_disabled': True},
+                                                   url=config.DEFAULT_URL)
 
         # Add Handler
         self.browser.SetClientHandler(ClientHandler())
 
     def getHandle(self):
         if self.hidden_window:
+            # PyQt5 on Linux
             return int(self.hidden_window.winId())
         try:
+            # PyQt4 and PyQt5
             return int(self.winId())
         except Exception:
-            ctypes.pythonapi.PyCapsule_GetPointer.restype = (
-                    ctypes.c_void_p)
-            ctypes.pythonapi.PyCapsule_GetPointer.argtypes = (
-                    [ctypes.py_object])
-            return ctypes.pythonapi.PyCapsule_GetPointer(
-                    self.winId(), None)
+            # PySide:
+            # | QWidget.winId() returns <PyCObject object at 0x02FD8788>
+            # | Converting it to int using ctypes.
+            ctypes.pythonapi.PyCapsule_GetPointer.restype = (ctypes.c_void_p)
+            ctypes.pythonapi.PyCapsule_GetPointer.argtypes = ([
+                ctypes.py_object
+            ])
+            return ctypes.pythonapi.PyCapsule_GetPointer(self.winId(), None)
 
     def moveEvent(self, _):
+        self.x = 0
+        self.y = 0
         if self.browser:
             if WINDOWS:
                 WindowUtils.OnSize(self.getHandle(), 0, 0, 0)
             elif LINUX:
-                self.browser.SetBounds(self.x, self.y,
-                                       self.width(), self.height())
+                self.browser.SetBounds(self.x, self.y, self.width(),
+                                       self.height())
             self.browser.NotifyMoveOrResizeStarted()
 
     def resizeEvent(self, event):
@@ -127,8 +146,8 @@ class CefWidget(QWidget):
             if WINDOWS:
                 WindowUtils.OnSize(self.getHandle(), 0, 0, 0)
             elif LINUX:
-                self.browser.SetBounds(self.x, self.y,
-                                       size.width(), size.height())
+                self.browser.SetBounds(self.x, self.y, size.width(),
+                                       size.height())
             self.browser.NotifyMoveOrResizeStarted()
 
 
@@ -166,8 +185,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         # Get image path
         self.current_image = self.GetImage()
 
-        # Create Viewer
-        self.CreateViewer()
         self.RestoreSize()
         # Check if image exist
         if os.path.exists(self.current_image) is False:
@@ -185,23 +202,42 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         self.resetQgsRubberBand()
         self.setOrientation()
         self.setPosition()
+        
+        # Create Viewer
+        self.CreateViewer()
 
     def SetInitialYaw(self):
         ''' Set Initial Yaw '''
         self.bearing = self.selected_features.attribute(config.column_yaw)
-        self.view.browser.GetMainFrame().ExecuteFunction("InitialYaw",
+        self.cef_widget.browser.GetMainFrame().ExecuteFunction("InitialYaw",
                                                          self.bearing)
-        return
 
     def CreateViewer(self):
         ''' Create Viewer '''
         qgsutils.showUserAndLogMessage(
             u"Information: ", u"Create viewer", onlyLog=True)
 
-        self.view = CefWidget(self)
-        self.ViewerLayout.addWidget(self.view)
-        self.view.embedBrowser()
-        return
+        self.cef_widget = CefWidget(self)
+        self.ViewerLayout.addWidget(self.cef_widget, 1, 0)
+        
+        if WINDOWS:
+            # On Windows with PyQt5 main window must be shown first
+            # before CEF browser is embedded, otherwise window is
+            # not resized and application hangs during resize.
+            self.show()
+            
+        self.cef_widget.embedBrowser()
+        
+        if LINUX:
+            # On Linux with PyQt5 the QX11EmbedContainer widget is
+            # no more available. An equivalent in Qt5 is to create
+            # a hidden window, embed CEF browser in it and then
+            # create a container for that hidden window and replace
+            # cef widget in the layout with the container.
+            # noinspection PyUnresolvedReferences, PyArgumentList
+            self.container = QWidget.createWindowContainer(
+                    self.cef_widget.hidden_window, parent=self)
+            self.ViewerLayout.addWidget(self.container, 1, 0)
 
     def RemoveImage(self):
         ''' Remove Image '''
@@ -242,8 +278,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         else:
             shutil.copy(src_dir, dst_dir)
 
-        return
-
     def RestoreSize(self):
         ''' Restore Dialog Size '''
         dw = self.s.value("EquirectangularViewer/width")
@@ -258,7 +292,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         anim.setEndValue(QSize(int(dw), int(dh)))
         anim.setDuration(1)
         anim.start()
-        return
 
     def SaveSize(self):
         ''' Save Dialog Size '''
@@ -266,7 +299,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         dh = self.height()
         self.s.setValue("EquirectangularViewer/width", dw)
         self.s.setValue("EquirectangularViewer/height", dh)
-        return
 
     def GetImage(self):
         ''' Get Selected Image '''
@@ -287,9 +319,8 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
 
     def ChangeUrlViewer(self, new_url):
         ''' Change Url Viewer '''
-        self.view.browser.GetMainFrame().ExecuteJavascript(
+        self.cef_widget.browser.GetMainFrame().ExecuteJavascript(
             "window.location='%s'" % new_url)
-        return
 
     def ReloadView(self, newId):
         ''' Reaload Image viewer '''
@@ -319,7 +350,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         self.CopyFile(self.current_image)
 
         self.ChangeUrlViewer(config.DEFAULT_URL)
-        return
 
     def ResizeDialog(self):
         ''' Expanded/Decreased Dialog '''
@@ -339,7 +369,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
 
         anim.setDuration(300)
         anim.start()
-        return
 
     def GetBackNextImage(self):
         ''' Get to Back Image '''
@@ -379,10 +408,7 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
                         QgsFeatureRequest().setFilterExpression(config.column_order + " ='" + 
                                                                 str(ac_lordem) + 
                                                                 "'"))]
-                    # Update selected feature
-                    self.ReloadView(ids[0])
-                    return
-
+                # Update selected feature
                 self.ReloadView(ids[0])
 
         if self.encontrado is False:
@@ -400,7 +426,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
             self.showFullScreen()
         else:
             self.showNormal()
-        return
 
     @staticmethod
     def ActualOrientation(yaw):
@@ -410,7 +435,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
             geo360Dialog = qgis.utils.plugins["EquirectangularViewer"].dlg
             if geo360Dialog is not None:
                 geo360Dialog.UpdateOrientation(yaw=float(yaw))
-        return
 
     def UpdateOrientation(self, yaw=None):
         ''' Update Orientation '''
@@ -510,7 +534,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         self.SaveSize()
         self.parent.dlg = None
         self.RemoveImage()
-        return
 
     def resetQgsRubberBand(self):
         ''' Remove RubbeBand '''
@@ -526,7 +549,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
 class ClientHandler():
     ''' CefPython Event '''
     # hilarious method but work
-
     def OnConsoleMessage(self, browser, message, source, line, level):
         try:
             Geo360Dialog.ActualOrientation(yaw=message)
