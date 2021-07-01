@@ -23,7 +23,7 @@ try:
     sys.path.append(
         "D:\eclipse\plugins\org.python.pydev.core_7.0.3.201811082356\pysrc")
     sys.path.append(
-        "/home/fragalop/.eclipse/360744286_linux_gtk_x86_64/plugins/org.python.pydev.core_8.1.0.202012051215/pysrc"
+        "/home/fragalop/eclipse/plugins/org.python.pydev.core_8.3.0.202104101217/pysrc"
     )
     from pydevd import *
 except ImportError:
