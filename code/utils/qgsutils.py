@@ -17,15 +17,14 @@ except ImportError:
 
 
 class qgsutils(object):
-
     @staticmethod
     def getAttributeFromFeature(feature, columnName):
-        ''' Get Attribute from feature '''
+        """Get Attribute from feature"""
         return feature.attribute(columnName)
 
     @staticmethod
     def zoomToFeature(canvas, layer, ide):
-        ''' Zoom to feature by Id '''
+        """Zoom to feature by Id"""
         if layer:
             for feature in layer.getFeatures():
                 if feature.id() == ide:
@@ -35,12 +34,13 @@ class qgsutils(object):
         return False
 
     @staticmethod
-    def showUserAndLogMessage(before, text="", level=QGis.Info, duration=3, onlyLog=False):
-        ''' Show user & log info/warning/error messages '''
+    def showUserAndLogMessage(
+        before, text="", level=QGis.Info, duration=3, onlyLog=False
+    ):
+        """Show user & log info/warning/error messages"""
         if not onlyLog:
             iface.messageBar().popWidget()
-            iface.messageBar().pushMessage(
-                before, text, level=level, duration=duration)
+            iface.messageBar().pushMessage(before, text, level=level, duration=duration)
         if level == QGis.Info:
             log.info(text)
         elif level == QGis.Warning:
@@ -51,7 +51,7 @@ class qgsutils(object):
 
     @staticmethod
     def getToFeature(layer, ide):
-        ''' Get To feature by ID '''
+        """Get To feature by ID"""
         if layer:
             for feature in layer.getFeatures():
                 if feature.id() == ide:

@@ -8,10 +8,9 @@ Click on the image to see the demo video.
  
 ## Prerequisites
  
-The libraries [CefPython](https://github.com/cztomczak/cefpython) is required and Pillow,  install the **cefpython3** python package and **Pillow**.
+The library Pillow is required,  install the **Pillow** python package.
 Always from command prompt:
 
-`python3 -m pip install cefpython3`
 `python3 -m pip install pillow`
 
 Or using:
@@ -20,7 +19,7 @@ Or using:
 
 
 Once installed, you can test the correct functioning of the plugin with the example that is provided,a shapefile with some images.
- [Test Project](https://github.com/All4Gis/EquirectangularViewer/tree/master/code/Project_example)
+ [Test Project](https://github.com/All4Gis/EquirectangularViewer/tree/master/Project_example)
  
  
 ## How it works?
@@ -28,7 +27,7 @@ Once installed, you can test the correct functioning of the plugin with the exam
 It's simple:
 - You start a local server in Python in  `http://127.0.0.1:1520/viewer.html `
 - A copy of the image associated to the selected registry is created in the folder where our viewer and server are.
-- With cefpython, we open the browser and return the current yaw to our canvas anytime the image is moved.
+- We open the browser and return the current yaw to our canvas anytime the image is moved.
  
  
 ## Donations

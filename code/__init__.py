@@ -20,8 +20,7 @@
 import sys
 
 try:
-    sys.path.append(
-        "D:\eclipse\plugins\org.python.pydev.core_7.0.3.201811082356\pysrc")
+    sys.path.append("C:\eclipse\plugins\org.python.pydev.core_8.3.0.202104101217\pysrc")
     sys.path.append(
         "/home/fragalop/eclipse/plugins/org.python.pydev.core_8.3.0.202104101217/pysrc"
     )
@@ -32,4 +31,5 @@ except ImportError:
 
 def classFactory(iface):
     from .Geo360 import Geo360
+
     return Geo360(iface)

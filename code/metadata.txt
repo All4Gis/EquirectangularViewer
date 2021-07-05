@@ -1,7 +1,7 @@
 [general]
 name= Equirectangular Viewer
 internal_name = EquirectangularViewer
-qgisMinimumVersion=3.4
+qgisMinimumVersion=3.12
 qgisMaximumVersion=3.99
 description= Plugin for viewer local equirectangular images.
 about= This plugin allows the visualization of equirectangular local images, although modifying the code, it can be used for any 360 image, given that the library Marzipano is used.

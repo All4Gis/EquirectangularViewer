@@ -41,7 +41,7 @@ class transformGeometry:
                     p2 = self.rotatePoint(p1, angle)
                     p3 = QgsPoint(point.x() + p2.x(), point.y() + p2.y())
                     ring.append(p3)
-                coords .append(ring)
+                coords.append(ring)
                 ring = []
             return QgsGeometry().fromPolygon(coords)
 
@@ -82,7 +82,9 @@ class transformGeometry:
             return QgsGeometry().fromMultiPolygon([coords])
 
         else:
-            QMessageBox.information(None, 'Information', str("Vector type is not supported."))
+            QMessageBox.information(
+                None, "Information", str("Vector type is not supported.")
+            )
             return None
 
     # Rotates a single point (centre 0/0).

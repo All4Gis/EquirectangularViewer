@@ -7,17 +7,17 @@ import sys
 import traceback
 
 try:
-    d = os.path.dirname(QgsApplication.qgisSettingsDirPath() + 'log/')
+    d = os.path.dirname(QgsApplication.qgisSettingsDirPath() + "log/")
     if not os.path.exists(d):
         os.mkdir(d)
 finally:
-    logFilePath = QgsApplication.qgisSettingsDirPath() + 'log/EquirectangularViewer.log'
+    logFilePath = QgsApplication.qgisSettingsDirPath() + "log/EquirectangularViewer.log"
 
 
 class log(object):
 
     handler = None
-    pluginId = 'EquirectangularViewer'
+    pluginId = "EquirectangularViewer"
 
     @staticmethod
     def error(text):
@@ -43,16 +43,20 @@ class log(object):
     def last_exception(msg):
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(
-            msg + '\n  '.join(traceback.format_exception(exc_type, exc_value, exc_traceback)))
+            msg
+            + "\n  ".join(
+                traceback.format_exception(exc_type, exc_value, exc_traceback)
+            )
+        )
 
     @staticmethod
     def initLogging():
         try:
-            """ set up rotating log file handler with custom formatting """
+            """set up rotating log file handler with custom formatting"""
             log.handler = logging.handlers.RotatingFileHandler(
-                logFilePath, maxBytes=1024 * 1024 * 10, backupCount=5)
-            formatter = logging.Formatter(
-                "%(asctime)s %(levelname)-8s %(message)s")
+                logFilePath, maxBytes=1024 * 1024 * 10, backupCount=5
+            )
+            formatter = logging.Formatter("%(asctime)s %(levelname)-8s %(message)s")
             log.handler.setFormatter(formatter)
             logger = logging.getLogger(log.pluginId)  # root logger
             logger.setLevel(logging.DEBUG)
