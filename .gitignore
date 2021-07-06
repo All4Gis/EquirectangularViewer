@@ -1,1 +1,4 @@
 Deploy/
+.project
+.pydevproject
+.settings

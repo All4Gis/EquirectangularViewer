@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+"name": "photos_4326",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 0.0, "PATH": "\/home\/fragalop\/Desktop\/Git\/EquirectangularViewer\/Project_example\/images\/0.jpg", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.685760342621331, 40.400419291455293 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 1.0, "PATH": "images\/3.png", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.685817060712635, 40.400469527479018 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 2.0, "PATH": "images\/2.jpg", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.685865676219466, 40.400516522468955 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 3.0, "PATH": "\/home\/fragalop\/Desktop\/Git\/EquirectangularViewer\/Project_example\/images\/1.jpg", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.685917532760087, 40.400561896942001 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 4.0, "PATH": "images\/2.jpg", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.68597425085139, 40.400615373999514 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 5.0, "PATH": "images\/1.jpg", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.68602610739201, 40.400670471573925 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 6.0, "PATH": "images\/0.jpg", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.686079584449525, 40.400712605013176 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 7.0, "PATH": "images\/3.png", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.686133061507039, 40.400759600003113 ] } },
+{ "type": "Feature", "properties": { "GID": null, "ORDER": 8.0, "PATH": "images\/4.jpg", "DIRECTION": 310.0 }, "geometry": { "type": "Point", "coordinates": [ -3.685701428121899, 40.400360181318021 ] } }
+]
+}
