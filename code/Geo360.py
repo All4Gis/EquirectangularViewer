@@ -38,6 +38,8 @@ try:
 except ImportError:
     None
 
+""" Server Handelr """
+
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
@@ -58,7 +60,7 @@ class Geo360:
         QSettings().setValue("/qgis/parallel_rendering", True)
         # OpenCL acceleration
         QSettings().setValue("/core/OpenClEnabled", True)
-        self.dlg = None
+        self.orbitalViewer = None
         self.server = None
         self.make_server()
 
@@ -85,6 +87,7 @@ class Geo360:
         return self.server_thread and self.server_thread.is_alive()
 
     def close_server(self):
+        """Close Local server"""
         # Close server
         if self.server is not None:
             self.server.shutdown()
@@ -95,6 +98,7 @@ class Geo360:
             self.server = None
 
     def make_server(self):
+        """Create Local server"""
         # Close server
         self.close_server()
         # Create Server
@@ -137,19 +141,18 @@ class Geo360:
             )
             return
 
-    def ShowDialog(self, featuresId=None, layer=None):
+    def ShowViewer(self, featuresId=None, layer=None):
         """Run dialog Geo360"""
         self.featuresId = featuresId
         self.layer = layer
 
-        if self.dlg is None:
-            self.dlg = Geo360Dialog(
+        if self.orbitalViewer is None:
+            self.orbitalViewer = Geo360Dialog(
                 self.iface, parent=self, featuresId=featuresId, layer=self.layer
             )
-            self.dlg.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)
-            self.dlg.show()
+            self.iface.addDockWidget(Qt.BottomDockWidgetArea, self.orbitalViewer)
         else:
-            self.dlg.ReloadView(self.featuresId)
+            self.orbitalViewer.ReloadView(self.featuresId)
 
 
 class SelectTool(QgsMapToolIdentify):
@@ -203,4 +206,4 @@ class SelectTool(QgsMapToolIdentify):
             feature = found_features[0].mFeature
 
             qgsutils.zoomToFeature(self.canvas, layer, feature.id())
-            self.parent.ShowDialog(featuresId=feature.id(), layer=layer)
+            self.parent.ShowViewer(featuresId=feature.id(), layer=layer)
