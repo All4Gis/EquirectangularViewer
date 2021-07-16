@@ -115,7 +115,6 @@ class Geo360Dialog(QDockWidget, Ui_orbitalDialog):
                 u"Information: ", u"There is no associated image."
             )
             self.resetQgsRubberBand()
-            # time.sleep(1)
             self.ChangeUrlViewer(self.DEFAULT_EMPTY)
             return
 
@@ -341,7 +340,13 @@ class Geo360Dialog(QDockWidget, Ui_orbitalDialog):
         """Set Orientation in the firt time"""
         self.bearing = self.selected_features.attribute(config.column_yaw)
 
-        self.actualPointDx = self.selected_features.geometry().asPoint()
+        originalPoint = self.selected_features.geometry().asPoint()
+        self.actualPointDx = qgsutils.convertProjection(
+            originalPoint.x(),
+            originalPoint.y(),
+            self.layer.crs().authid(),
+            self.canvas.mapSettings().destinationCrs().authid(),
+        )
 
         self.actualPointOrientation = QgsRubberBand(
             self.iface.mapCanvas(), QgsWkbTypes.LineGeometry
@@ -376,7 +381,14 @@ class Geo360Dialog(QDockWidget, Ui_orbitalDialog):
 
     def setPosition(self):
         """Set RubberBand Position"""
-        self.actualPointDx = self.selected_features.geometry().asPoint()
+        # Transform Point
+        originalPoint = self.selected_features.geometry().asPoint()
+        self.actualPointDx = qgsutils.convertProjection(
+            originalPoint.x(),
+            originalPoint.y(),
+            "EPSG:4326",
+            self.canvas.mapSettings().destinationCrs().authid(),
+        )
 
         self.positionDx = QgsRubberBand(
             self.iface.mapCanvas(), QgsWkbTypes.PointGeometry

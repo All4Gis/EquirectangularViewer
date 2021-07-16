@@ -83,8 +83,8 @@ class Geo360:
         # Close server
         self.close_server()
 
-    def is_running(self):
-        return self.server_thread and self.server_thread.is_alive()
+    # def is_running(self):
+    #     return self.server_thread and self.server_thread.is_alive()
 
     def close_server(self):
         """Close Local server"""
@@ -118,15 +118,12 @@ class Geo360:
             print("Serving at port: %s" % self.server.server_address[1])
             time.sleep(1)
             self.server_thread.start()
-            # while self.server_thread.is_alive():
-            #     print ("isRunning")
         except Exception:
             print("Server Error")
 
     def run(self):
         """Run click feature"""
         self.found = False
-
         # Check if mapa foto is loaded
         lys = self.canvas.layers()
         for layer in lys:
@@ -204,6 +201,6 @@ class SelectTool(QgsMapToolIdentify):
 
             layer = found_features[0].mLayer
             feature = found_features[0].mFeature
-
+            # Zoom To Feature
             qgsutils.zoomToFeature(self.canvas, layer, feature.id())
             self.parent.ShowViewer(featuresId=feature.id(), layer=layer)
