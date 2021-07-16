@@ -31,14 +31,11 @@ from qgis.gui import QgsRubberBand
 
 from qgis.PyQt.QtCore import (
     QObject,
-    QSettings,
     QUrl,
     Qt,
-    QPropertyAnimation,
-    QSize,
     pyqtSignal,
 )
-from qgis.PyQt.QtWidgets import QDialog, QWidget
+from qgis.PyQt.QtWidgets import QDialog, QWidget, QDockWidget
 from qgis.PyQt.QtGui import QWindow
 import EquirectangularViewer.config as config
 from EquirectangularViewer.geom.transformgeom import transformGeometry
@@ -68,16 +65,15 @@ class _ViewerPage(QWebPage):
         self.newData.emit(l)
 
 
-class Geo360Dialog(QWidget, Ui_orbitalDialog):
+class Geo360Dialog(QDockWidget, Ui_orbitalDialog):
 
     """Geo360 Dialog Class"""
 
     def __init__(self, iface, parent=None, featuresId=None, layer=None):
 
-        QDialog.__init__(self)
+        QDockWidget.__init__(self)
 
         self.setupUi(self)
-        self.s = QSettings()
 
         self.DEFAULT_URL = (
             "http://" + config.IP + ":" + str(config.PORT) + "/viewer.html"
@@ -93,7 +89,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         self.CreateViewer()
 
         self.plugin_path = os.path.dirname(os.path.realpath(__file__))
-
         self.iface = iface
         self.canvas = self.iface.mapCanvas()
         self.parent = parent
@@ -114,14 +109,12 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         # Get image path
         self.current_image = self.GetImage()
 
-        self.RestoreSize()
         # Check if image exist
         if os.path.exists(self.current_image) is False:
             qgsutils.showUserAndLogMessage(
                 u"Information: ", u"There is no associated image."
             )
             self.resetQgsRubberBand()
-            # time.sleep(1)
             self.ChangeUrlViewer(self.DEFAULT_EMPTY)
             return
 
@@ -183,9 +176,7 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         dst_dir = self.plugin_path + "/viewer"
 
         # Copy image in local folder
-        # Uncomment for large images if viewer is blank screen
         img = Image.open(src_dir)
-        # newwidth = 8000
         rgb_im = img.convert("RGB")
         dst_dir = dst_dir + "/image.jpg"
 
@@ -194,40 +185,7 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         except OSError:
             pass
 
-        # width, _ = img.size
-        #
-        # if width > newwidth:
-        #     wpercent = (newwidth / float(img.size[0]))
-        #     hsize = int((float(img.size[1]) * float(wpercent)))
-        #     img = img.resize((newwidth, hsize), Image.ANTIALIAS)
-        #     img.save(dst_dir, optimize=True, quality=95)
-        #
-        # # Comment for large images if viewer is blank screen
-        # else:
         rgb_im.save(dst_dir)
-        # shutil.copy(src_dir, dst_dir)
-
-    def RestoreSize(self):
-        """Restore Dialog Size"""
-        dw = self.s.value("EquirectangularViewer/width")
-        dh = self.s.value("EquirectangularViewer/height")
-
-        if dw is None:
-            return
-        size = self.size()
-
-        anim = QPropertyAnimation(self, b"size", self)
-        anim.setStartValue(size)
-        anim.setEndValue(QSize(int(dw), int(dh)))
-        anim.setDuration(1)
-        anim.start()
-
-    def SaveSize(self):
-        """Save Dialog Size"""
-        dw = self.width()
-        dh = self.height()
-        self.s.setValue("EquirectangularViewer/width", dw)
-        self.s.setValue("EquirectangularViewer/height", dh)
 
     def GetImage(self):
         """Get Selected Image"""
@@ -276,25 +234,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         self.CopyFile(self.current_image)
 
         self.ChangeUrlViewer(self.DEFAULT_URL)
-
-    def ResizeDialog(self):
-        """Expanded/Decreased Dialog"""
-        sender = QObject.sender(self)
-
-        w = self.width()
-        h = self.height()
-
-        size = self.size()
-        anim = QPropertyAnimation(self, b"size", self)
-        anim.setStartValue(size)
-
-        if sender.objectName() == "btn_ZoomOut":
-            anim.setEndValue(QSize(w - 50, h - 50))
-        else:
-            anim.setEndValue(QSize(w + 50, h + 50))
-
-        anim.setDuration(300)
-        anim.start()
 
     def GetBackNextImage(self):
         """Get to Back Image"""
@@ -363,15 +302,6 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         else:
             self.showNormal()
 
-    # @staticmethod
-    # def ActualOrientation(yaw):
-    #     ''' Get Actual yaw '''
-    #     geo360Plugin = qgis.utils.plugins["EquirectangularViewer"]
-    #     if geo360Plugin is not None:
-    #         geo360Dialog = qgis.utils.plugins["EquirectangularViewer"].dlg
-    #         if geo360Dialog is not None:
-    #             geo360Dialog.UpdateOrientation(yaw=float(yaw))
-
     def UpdateOrientation(self, yaw=None):
         """Update Orientation"""
         self.bearing = self.selected_features.attribute(config.column_yaw)
@@ -410,7 +340,13 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         """Set Orientation in the firt time"""
         self.bearing = self.selected_features.attribute(config.column_yaw)
 
-        self.actualPointDx = self.selected_features.geometry().asPoint()
+        originalPoint = self.selected_features.geometry().asPoint()
+        self.actualPointDx = qgsutils.convertProjection(
+            originalPoint.x(),
+            originalPoint.y(),
+            self.layer.crs().authid(),
+            self.canvas.mapSettings().destinationCrs().authid(),
+        )
 
         self.actualPointOrientation = QgsRubberBand(
             self.iface.mapCanvas(), QgsWkbTypes.LineGeometry
@@ -445,7 +381,14 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
 
     def setPosition(self):
         """Set RubberBand Position"""
-        self.actualPointDx = self.selected_features.geometry().asPoint()
+        # Transform Point
+        originalPoint = self.selected_features.geometry().asPoint()
+        self.actualPointDx = qgsutils.convertProjection(
+            originalPoint.x(),
+            originalPoint.y(),
+            "EPSG:4326",
+            self.canvas.mapSettings().destinationCrs().authid(),
+        )
 
         self.positionDx = QgsRubberBand(
             self.iface.mapCanvas(), QgsWkbTypes.PointGeometry
@@ -478,10 +421,8 @@ class Geo360Dialog(QWidget, Ui_orbitalDialog):
         self.resetQgsRubberBand()
         self.canvas.refresh()
         self.iface.actionPan().trigger()
-        self.SaveSize()
-        self.parent.dlg = None
+        self.parent.orbitalViewer = None
         self.RemoveImage()
-        # self.parent.close_server()
 
     def resetQgsRubberBand(self):
         """Remove RubbeBand"""

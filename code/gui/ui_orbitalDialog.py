@@ -2,9 +2,10 @@
 
 # Form implementation generated from reading ui file 'ui/ui_orbitalDialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.10.1
+# Created by: PyQt5 UI code generator 5.14.1
 #
 # WARNING! All changes made in this file will be lost!
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -12,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_orbitalDialog(object):
     def setupUi(self, orbitalDialog):
         orbitalDialog.setObjectName("orbitalDialog")
-        orbitalDialog.resize(1298, 813)
+        orbitalDialog.resize(563, 375)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
         )
@@ -27,7 +28,10 @@ class Ui_orbitalDialog(object):
             QtGui.QIcon.Off,
         )
         orbitalDialog.setWindowIcon(icon)
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(orbitalDialog)
+        orbitalDialog.setFeatures(QtWidgets.QDockWidget.AllDockWidgetFeatures)
+        self.dockWidgetContents = QtWidgets.QWidget()
+        self.dockWidgetContents.setObjectName("dockWidgetContents")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.dockWidgetContents)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.ViewerLayout = QtWidgets.QGridLayout()
         self.ViewerLayout.setObjectName("ViewerLayout")
@@ -35,81 +39,56 @@ class Ui_orbitalDialog(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.btn_ZoomIn = QtWidgets.QPushButton(orbitalDialog)
-        self.btn_ZoomIn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_ZoomIn.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(
-            QtGui.QPixmap(":/EquirectangularViewer/images/Zoom_in.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off,
-        )
-        self.btn_ZoomIn.setIcon(icon1)
-        self.btn_ZoomIn.setObjectName("btn_ZoomIn")
-        self.horizontalLayout.addWidget(self.btn_ZoomIn)
-        self.btn_ZoomOut = QtWidgets.QPushButton(orbitalDialog)
-        self.btn_ZoomOut.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.btn_ZoomOut.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(
-            QtGui.QPixmap(":/EquirectangularViewer/images/Zoom_out.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off,
-        )
-        self.btn_ZoomOut.setIcon(icon2)
-        self.btn_ZoomOut.setObjectName("btn_ZoomOut")
-        self.horizontalLayout.addWidget(self.btn_ZoomOut)
         spacerItem = QtWidgets.QSpacerItem(
             5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
         self.horizontalLayout.addItem(spacerItem)
-        self.btn_back = QtWidgets.QPushButton(orbitalDialog)
+        self.btn_back = QtWidgets.QPushButton(self.dockWidgetContents)
         self.btn_back.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_back.setText("")
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(
             QtGui.QPixmap(":/EquirectangularViewer/images/Previous_Arrow.png"),
             QtGui.QIcon.Normal,
             QtGui.QIcon.Off,
         )
-        self.btn_back.setIcon(icon3)
+        self.btn_back.setIcon(icon1)
         self.btn_back.setObjectName("btn_back")
         self.horizontalLayout.addWidget(self.btn_back)
-        self.btn_next = QtWidgets.QPushButton(orbitalDialog)
+        self.btn_next = QtWidgets.QPushButton(self.dockWidgetContents)
         self.btn_next.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_next.setText("")
-        icon4 = QtGui.QIcon()
-        icon4.addPixmap(
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(
             QtGui.QPixmap(":/EquirectangularViewer/images/Next_Arrow.png"),
             QtGui.QIcon.Normal,
             QtGui.QIcon.Off,
         )
-        self.btn_next.setIcon(icon4)
+        self.btn_next.setIcon(icon2)
         self.btn_next.setObjectName("btn_next")
         self.horizontalLayout.addWidget(self.btn_next)
         spacerItem1 = QtWidgets.QSpacerItem(
             5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
         )
         self.horizontalLayout.addItem(spacerItem1)
-        self.btn_fullscreen = QtWidgets.QPushButton(orbitalDialog)
+        self.btn_fullscreen = QtWidgets.QPushButton(self.dockWidgetContents)
         self.btn_fullscreen.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_fullscreen.setText("")
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(
             QtGui.QPixmap(":/EquirectangularViewer/images/full_screen.png"),
             QtGui.QIcon.Normal,
             QtGui.QIcon.Off,
         )
-        self.btn_fullscreen.setIcon(icon5)
+        self.btn_fullscreen.setIcon(icon3)
         self.btn_fullscreen.setCheckable(True)
         self.btn_fullscreen.setObjectName("btn_fullscreen")
         self.horizontalLayout.addWidget(self.btn_fullscreen)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
+        orbitalDialog.setWidget(self.dockWidgetContents)
 
         self.retranslateUi(orbitalDialog)
         self.btn_fullscreen.clicked["bool"].connect(orbitalDialog.FullScreen)
-        self.btn_ZoomOut.clicked.connect(orbitalDialog.ResizeDialog)
-        self.btn_ZoomIn.clicked.connect(orbitalDialog.ResizeDialog)
         self.btn_back.clicked.connect(orbitalDialog.GetBackNextImage)
         self.btn_next.clicked.connect(orbitalDialog.GetBackNextImage)
         QtCore.QMetaObject.connectSlotsByName(orbitalDialog)

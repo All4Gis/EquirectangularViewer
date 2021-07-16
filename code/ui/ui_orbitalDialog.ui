@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>orbitalDialog</class>
- <widget class="QDialog" name="orbitalDialog">
+ <widget class="QDockWidget" name="orbitalDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1298</width>
-    <height>813</height>
+    <width>563</width>
+    <height>375</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,124 +16,101 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>Equirectangular Viewer</string>
-  </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
     <normaloff>:/EquirectangularViewer/images/icon.png</normaloff>:/EquirectangularViewer/images/icon.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_3">
-   <item>
-    <layout class="QGridLayout" name="ViewerLayout"/>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetFixedSize</enum>
-     </property>
-     <item>
-      <widget class="QPushButton" name="btn_ZoomIn">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/EquirectangularViewer/images/Zoom_in.png</normaloff>:/EquirectangularViewer/images/Zoom_in.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_ZoomOut">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/EquirectangularViewer/images/Zoom_out.png</normaloff>:/EquirectangularViewer/images/Zoom_out.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>5</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_back">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/EquirectangularViewer/images/Previous_Arrow.png</normaloff>:/EquirectangularViewer/images/Previous_Arrow.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_next">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/EquirectangularViewer/images/Next_Arrow.png</normaloff>:/EquirectangularViewer/images/Next_Arrow.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>5</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btn_fullscreen">
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="resources.qrc">
-         <normaloff>:/EquirectangularViewer/images/full_screen.png</normaloff>:/EquirectangularViewer/images/full_screen.png</iconset>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-  </layout>
+  <property name="features">
+   <set>QDockWidget::AllDockWidgetFeatures</set>
+  </property>
+  <property name="windowTitle">
+   <string>Equirectangular Viewer</string>
+  </property>
+  <widget class="QWidget" name="dockWidgetContents">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <layout class="QGridLayout" name="ViewerLayout"/>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>5</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_back">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/EquirectangularViewer/images/Previous_Arrow.png</normaloff>:/EquirectangularViewer/images/Previous_Arrow.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_next">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/EquirectangularViewer/images/Next_Arrow.png</normaloff>:/EquirectangularViewer/images/Next_Arrow.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>5</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_fullscreen">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resources.qrc">
+          <normaloff>:/EquirectangularViewer/images/full_screen.png</normaloff>:/EquirectangularViewer/images/full_screen.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
  </widget>
  <resources>
   <include location="resources.qrc"/>
@@ -152,38 +129,6 @@
     <hint type="destinationlabel">
      <x>350</x>
      <y>311</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_ZoomOut</sender>
-   <signal>clicked()</signal>
-   <receiver>orbitalDialog</receiver>
-   <slot>ResizeDialog()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>58</x>
-     <y>310</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>301</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btn_ZoomIn</sender>
-   <signal>clicked()</signal>
-   <receiver>orbitalDialog</receiver>
-   <slot>ResizeDialog()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>21</x>
-     <y>311</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1</x>
-     <y>293</y>
     </hint>
    </hints>
   </connection>
