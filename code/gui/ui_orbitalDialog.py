@@ -14,19 +14,13 @@ class Ui_orbitalDialog(object):
     def setupUi(self, orbitalDialog):
         orbitalDialog.setObjectName("orbitalDialog")
         orbitalDialog.resize(563, 375)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(orbitalDialog.sizePolicy().hasHeightForWidth())
         orbitalDialog.setSizePolicy(sizePolicy)
         icon = QtGui.QIcon()
-        icon.addPixmap(
-            QtGui.QPixmap(":/EquirectangularViewer/images/icon.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off,
-        )
+        icon.addPixmap(QtGui.QPixmap(":/EquirectangularViewer/images/icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         orbitalDialog.setWindowIcon(icon)
         orbitalDialog.setFeatures(QtWidgets.QDockWidget.AllDockWidgetFeatures)
         self.dockWidgetContents = QtWidgets.QWidget()
@@ -39,19 +33,16 @@ class Ui_orbitalDialog(object):
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(
-            5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        self.yawLbl = QtWidgets.QLabel(self.dockWidgetContents)
+        self.yawLbl.setObjectName("yawLbl")
+        self.horizontalLayout.addWidget(self.yawLbl)
+        spacerItem = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.btn_back = QtWidgets.QPushButton(self.dockWidgetContents)
         self.btn_back.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_back.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(
-            QtGui.QPixmap(":/EquirectangularViewer/images/Previous_Arrow.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off,
-        )
+        icon1.addPixmap(QtGui.QPixmap(":/EquirectangularViewer/images/Previous_Arrow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_back.setIcon(icon1)
         self.btn_back.setObjectName("btn_back")
         self.horizontalLayout.addWidget(self.btn_back)
@@ -59,27 +50,17 @@ class Ui_orbitalDialog(object):
         self.btn_next.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_next.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(
-            QtGui.QPixmap(":/EquirectangularViewer/images/Next_Arrow.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off,
-        )
+        icon2.addPixmap(QtGui.QPixmap(":/EquirectangularViewer/images/Next_Arrow.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_next.setIcon(icon2)
         self.btn_next.setObjectName("btn_next")
         self.horizontalLayout.addWidget(self.btn_next)
-        spacerItem1 = QtWidgets.QSpacerItem(
-            5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
-        )
+        spacerItem1 = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem1)
         self.btn_fullscreen = QtWidgets.QPushButton(self.dockWidgetContents)
         self.btn_fullscreen.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.btn_fullscreen.setText("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(
-            QtGui.QPixmap(":/EquirectangularViewer/images/full_screen.png"),
-            QtGui.QIcon.Normal,
-            QtGui.QIcon.Off,
-        )
+        icon3.addPixmap(QtGui.QPixmap(":/EquirectangularViewer/images/full_screen.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btn_fullscreen.setIcon(icon3)
         self.btn_fullscreen.setCheckable(True)
         self.btn_fullscreen.setObjectName("btn_fullscreen")
@@ -88,16 +69,13 @@ class Ui_orbitalDialog(object):
         orbitalDialog.setWidget(self.dockWidgetContents)
 
         self.retranslateUi(orbitalDialog)
-        self.btn_fullscreen.clicked["bool"].connect(orbitalDialog.FullScreen)
+        self.btn_fullscreen.clicked['bool'].connect(orbitalDialog.FullScreen)
         self.btn_back.clicked.connect(orbitalDialog.GetBackNextImage)
         self.btn_next.clicked.connect(orbitalDialog.GetBackNextImage)
         QtCore.QMetaObject.connectSlotsByName(orbitalDialog)
 
     def retranslateUi(self, orbitalDialog):
         _translate = QtCore.QCoreApplication.translate
-        orbitalDialog.setWindowTitle(
-            _translate("orbitalDialog", "Equirectangular Viewer")
-        )
-
-
+        orbitalDialog.setWindowTitle(_translate("orbitalDialog", "Equirectangular Viewer"))
+        self.yawLbl.setText(_translate("orbitalDialog", "Yaw:"))
 from EquirectangularViewer.gui import resources_rc

@@ -126,6 +126,7 @@ class Geo360Dialog(QDockWidget, Ui_orbitalDialog):
         self.setOrientation()
         self.setPosition()
 
+    """Update data from Marzipano Viewer"""
     def onNewData(self, data):
         try:
             newYaw = float(data[0])
@@ -330,11 +331,18 @@ class Geo360Dialog(QDockWidget, Ui_orbitalDialog):
         else:
             angle = float(self.bearing) * math.pi / -180
 
-        tmpGeom = self.actualPointOrientation.asGeometry()
 
-        self.actualPointOrientation.setToGeometry(
-            self.rotateTool.rotate(tmpGeom, self.actualPointDx, angle), self.dumLayer
-        )
+        tmpGeom = self.actualPointOrientation.asGeometry()
+        rotatePoint = self.rotateTool.rotate(tmpGeom, self.actualPointDx, angle)
+        
+        self.actualPointOrientation.setToGeometry(rotatePoint, self.dumLayer)
+        # Set Azimut value
+        tmpGeom = rotatePoint.asPolyline()
+        azim = tmpGeom[0].azimuth(tmpGeom[1])
+        if  azim < 0:
+            azim += 360
+        self.yawLbl.setText("Yaw : " + str(round(yaw,2)) + " Azimut : " + str(round(azim,2)))
+
 
     def setOrientation(self, yaw=None):
         """Set Orientation in the firt time"""
@@ -427,6 +435,7 @@ class Geo360Dialog(QDockWidget, Ui_orbitalDialog):
     def resetQgsRubberBand(self):
         """Remove RubbeBand"""
         try:
+            self.yawLbl.setText("")
             self.positionSx.reset()
             self.positionInt.reset()
             self.positionDx.reset()

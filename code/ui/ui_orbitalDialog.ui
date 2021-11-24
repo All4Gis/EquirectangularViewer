@@ -37,6 +37,13 @@
        <enum>QLayout::SetFixedSize</enum>
       </property>
       <item>
+       <widget class="QLabel" name="yawLbl">
+        <property name="text">
+         <string>Yaw:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="horizontalSpacer_2">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
