@@ -34,6 +34,8 @@ class Ui_orbitalDialog(object):
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.yawLbl = QtWidgets.QLabel(self.dockWidgetContents)
+        self.yawLbl.setCursor(QtGui.QCursor(QtCore.Qt.IBeamCursor))
+        self.yawLbl.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByMouse)
         self.yawLbl.setObjectName("yawLbl")
         self.horizontalLayout.addWidget(self.yawLbl)
         spacerItem = QtWidgets.QSpacerItem(5, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
